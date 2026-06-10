@@ -1,6 +1,6 @@
-/* script.js */
+/* script.js - GatisBank Full Engine */
 
-// Base de datos Local P2P
+// ================= BASE DE DATOS LOCAL P2P =================
 if (!localStorage.getItem('gatis_full_offline_db')) {
     const defaultDB = {
         "matias": { password: "4026", displayName: "Matías J.", balance: 1000.00, txs: [], internet: false, exterior: false },
@@ -18,14 +18,13 @@ let pagoScanner = null;
 let reciboScanner = null;
 let currentAuthorizedFunction = null;
 
-// ================= LÓGICA DE ALGORITMO GATISTOKEN DINÁMICO (PROBLEMA 2) =================
+// ================= ALGORITMO GATISTOKEN DINÁMICO =================
 // Genera un token matemático único de 6 dígitos que cambia cada minuto del día
 function calculateCurrentToken() {
     const ahora = new Date();
     const factorDia = ahora.getDate() * ahora.getMonth() + 1;
     const factorMinuto = ahora.getHours() * 60 + ahora.getMinutes();
     
-    // Algoritmo matemático pseudoaleatorio basado en tiempo real
     let seed = (factorMinuto * 4026) + factorDia;
     let tokenValue = Math.abs(Math.sin(seed) * 1000000);
     let tokenFinal = Math.floor(tokenValue % 900000) + 100000; 
@@ -69,12 +68,12 @@ function handleLogin() {
         document.getElementById('check-internet').checked = db[currentUserKey].internet;
         document.getElementById('check-exterior').checked = db[currentUserKey].exterior;
         
-        // --- SOLUCIÓN PROBLEMA 3: Filtrar Abono solo para cuentas Demo ---
+        // Filtrar Abono solo para las 2 cuentas Demo
         const btnAbono = document.getElementById('btn-deposito-abono');
         if (currentUserKey === "matias" || currentUserKey === "amigo") {
-            btnAbono.style.display = "flex"; // Permitido
+            btnAbono.style.display = "flex";
         } else {
-            btnAbono.style.display = "none"; // Ocultado para cuentas creadas externas
+            btnAbono.style.display = "none";
         }
 
         render();
@@ -124,7 +123,7 @@ function requestGatisToken(targetFunctionName) {
 
 function validateGatisToken() {
     const tokenInput = document.getElementById('token-input').value.trim();
-    const correctToken = calculateCurrentToken(); // Llama al generador dinámico matemático del minuto actual
+    const correctToken = calculateCurrentToken();
 
     if (tokenInput === correctToken) {
         if (typeof window[currentAuthorizedFunction] === 'function') {
@@ -139,7 +138,6 @@ function validateGatisToken() {
 
 // ================= FUNCIONES BANCARIAS ORIGINALES =================
 function doDeposit() {
-    // Solo las cuentas demo entran aquí porque a las otras se les oculta el botón en el login
     const amt = parseFloat(document.getElementById('input-dep-amount').value);
     if (!amt || amt <= 0) return;
     let db = getDB();
@@ -150,7 +148,6 @@ function doDeposit() {
     closeSheet('modal-dep');
 }
 
-// SOLUCIÓN PROBLEMA 1: El botón de servicios ahora llama y ejecuta perfectamente esta sección
 function executeServicePayment() {
     const type = document.getElementById('servicio-tipo').value;
     const mnt = parseFloat(document.getElementById('servicio-monto').value);
@@ -216,6 +213,7 @@ function startPagoCamera() {
     pagoScanner.start({ facingMode: "environment" }, { fps: 15, qrbox: { width: 230, height: 230 } }, (qrText) => { pagoScanner.stop().then(() => { processPagoData(qrText); }); }, (err) => {}).catch(err => alert("Cámara Bloqueada: " + err));
 }
 
+// --- PARCHE DEL VOUCHER INCORPORADO CON RETRASO SEGURO ---
 function processPagoData(qrText) {
     let data = null;
     try { data = JSON.parse(qrText.trim()); } catch(e) { return alert("Código no reconocido."); }
@@ -230,10 +228,25 @@ function processPagoData(qrText) {
         saveDB(db);
         render();
 
-        const reciboData = { tipo: "RECIBO_CONFIRMADO_FULL", id: data.id, cobrador: data.cobrador, pagadorNombre: db[currentUserKey].displayName, monto: data.monto };
-        document.getElementById('receipt-qrcode-container').innerHTML = "";
-        new QRCode(document.getElementById('receipt-qrcode-container'), { text: JSON.stringify(reciboData), width: 160, height: 160 });
+        // Primero abrimos el bloque del contenedor en la pantalla
         document.getElementById('pago-exitoso-block').style.display = "block";
+        document.getElementById('receipt-qrcode-container').innerHTML = "";
+
+        // Esperamos 50ms para que la librería encuentre el bloque renderizado y pinte el QR sin bugs
+        setTimeout(() => {
+            const reciboData = { 
+                tipo: "RECIBO_CONFIRMADO_FULL", 
+                id: data.id, 
+                cobrador: data.cobrador, 
+                pagadorNombre: db[currentUserKey].displayName, 
+                monto: data.monto 
+            };
+            new QRCode(document.getElementById('receipt-qrcode-container'), { 
+                text: JSON.stringify(reciboData), 
+                width: 160, 
+                height: 160 
+            });
+        }, 50);
     }
 }
 
@@ -260,6 +273,7 @@ function processReciboData(qrText) {
     alert("¡Fondos Offline Recibidos!");
 }
 
+// ================= RENDERING =================
 function render() {
     if(!currentUserKey) return;
     let db = getDB();
