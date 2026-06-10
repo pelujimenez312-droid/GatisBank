@@ -53,11 +53,25 @@
         }
 
         .login-logo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             font-size: 36px;
             font-weight: 800;
             color: #0284c7;
             text-align: center;
             margin-bottom: 30px;
+            gap: 10px;
+        }
+
+        .gatis-icon {
+            width: 80px;
+            height: 80px;
+        }
+
+        .gatis-icon.small {
+            width: 32px;
+            height: 32px;
         }
 
         .auth-toggle-link {
@@ -87,6 +101,12 @@
 
         .welcome-text { font-size: 14px; color: #6b7280; }
         .user-name { font-size: 18px; font-weight: 700; color: #111827; }
+        
+        .logo-banco-container {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
         .logo-banco { font-size: 20px; font-weight: 800; color: #0284c7; }
 
         .main-content {
@@ -154,7 +174,7 @@
         .transaction-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid #f3f4f6; }
         .transaction-row:last-child { border-bottom: none; }
         .tx-main { display: flex; align-items: center; gap: 12px; }
-        .tx-avatar { width: 40px; height: 40px; background-color: #f3f4f6; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
+        .tx-avatar { width: 40px; height: 40px; background-color: #f3f4f6; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 20px; }
         .tx-title { font-size: 14px; font-weight: 600; }
         .tx-date { font-size: 12px; color: #9ca3af; }
         .tx-amount { font-size: 14px; font-weight: 700; }
@@ -209,7 +229,6 @@
         .btn-primary { width: 100%; padding: 14px; background-color: #0284c7; border: none; border-radius: 12px; color: white; font-weight: 600; font-size: 15px; cursor: pointer; }
         .btn-secondary { width: 100%; padding: 12px; background: none; border: none; color: #6b7280; font-size: 14px; margin-top: 8px; cursor: pointer; }
 
-        /* Contenedores de QR y Lector */
         #qrcode-container, #receipt-qrcode-container { display: flex; justify-content: center; margin: 15px 0; padding: 10px; background: white; border-radius: 12px; }
         .camera-scanner-view { width: 100%; background: #000000; border-radius: 16px; overflow: hidden; margin-bottom: 15px; border: 2px solid #0284c7; }
     </style>
@@ -219,7 +238,10 @@
     <div class="app-container">
 
         <div id="login-screen" class="auth-screen">
-            <div class="login-logo">🐱 GatisBank</div>
+            <div class="login-logo">
+                <img class="gatis-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkBAMAAACCb7mCAAAAMFBMVEUAAADu7u7////m5ubv7++9vb339/fOzs7W1tbex73e3t7GxsbMzMzW1tbOzs7ex73v7+96zUorAAAACXBIWXMAAA7EAAAOxAGVKw4bAAACp0lEQVRYw+2XT2vbMByHP0e6m6X0Vug92K6HwU69DTbYToZ7b7mGwl66m8U5h0LeU29zKAn0vXWwU09NCOwepX8itWw5dtbYThf6uSCS9ennyb9kW6wE+KshGZp9bXoN7bN6R8No/N/bpxK7oK81fIn/4wK6G6uiv0mCOgNNoP8u8VzC9ySgD0lwZ6AN9E6COgNNoB8kvEs4SwI6N7+vO6AnCXgnm7o7Vf7/3S6fG2itvGgT9fT47M9U1D6f1xKqM1C6vO7A5wVUNzbyG+GfG8pI5bVfKshW0fBfG+6L28gP2vXU/ZfV0M/Yfdf9g6g8o66l7L6unPmLzXff0M7V876wZ/90oG6l7V5WNuux9qP6lHVDX/f2I+nFw2Vw99fcWpW6m9qEqG7V7vD9Tf0bVqfuo9vXUffb5B1S7P+Osnv6I6v6Mc38m0T/Uf+HwWdfq2Ubd93Z9pP6W/vF9Lg6f6wF9on/O+nB4tC9fS+Tj8Anf06fD4Yv6vEwW+tXhcO96SST6HreR6GvcNqK77ZlE9+7Y0Yf9GzVbWp0p6qTfOuxP61Y600O0uP6Iqt76Y0S9fXGs+0eH6o316bF647w+7p006o7v486ZfD7X7V/Lujuj89rZfD6z7R036ozV/bH597I8N3IctHNu3B6bd6P0F+IidIidwD0R6Y4QOofvAnmXbAn8F5C9m71b9G+FvsCfoX8DeReIidAn6N6F7An0fSBvAnkTSF6I2e6G7M+ivsD9FfoB+gHyX7B3k/gS+gR7v6I6Qv6M7gGZ6O8C/RDoB+g+kP/O9v9I9G+m/f8Xof8B8mepE6EvsE976mN0D8gPUPZ9G50C6v0Feg+YvWshO0S9AnXvS3YKyN4XpU6F7C8Zew+Ieg+I3pfsPCD0S3bW9wFhn/P7gLB9wfcBofuS3wfyH7P5v9XfFfYlvw8I++n/V38X2Geor/v/w/M/2G9M3Uv+N7S99X/8w+fP2vY/fIqX0Ew9Wv8XfPjE+m8/m86VeqT/VfDhy0a8GvFqxKsRr0a8GvFqxKsRr0a8GvH7D78AnE6B6mXnU0YAAAAASUVORK5CYII=" alt="GatisBank Logo">
+                GatisBank
+            </div>
             <input type="text" id="login-user" class="input-box" placeholder="Usuario">
             <input type="password" id="login-pass" class="input-box" placeholder="Contraseña">
             <button class="btn-primary" onclick="handleLogin()">Ingresar Seguro</button>
@@ -227,7 +249,10 @@
         </div>
 
         <div id="register-screen" class="auth-screen" style="display: none;">
-            <div class="login-logo">🐱 Registro GatisBank</div>
+            <div class="login-logo">
+                <img class="gatis-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkBAMAAACCb7mCAAAAMFBMVEUAAADu7u7////m5ubv7++9vb339/fOzs7W1tbex73e3t7GxsbMzMzW1tbOzs7ex73v7+96zUorAAAACXBIWXMAAA7EAAAOxAGVKw4bAAACp0lEQVRYw+2XT2vbMByHP0e6m6X0Vug92K6HwU69DTbYToZ7b7mGwl66m8U5h0LeU29zKAn0vXWwU09NCOwepX8itWw5dtbYThf6uSCS9ennyb9kW6wE+KshGZp9bXoN7bN6R8No/N/bpxK7oK81fIn/4wK6G6uiv0mCOgNNoP8u8VzC9ySgD0lwZ6AN9E6COgNNoB8kvEs4SwI6N7+vO6AnCXgnm7o7Vf7/3S6fG2itvGgT9fT47M9U1D6f1xKqM1C6vO7A5wVUNzbyG+GfG8pI5bVfKshW0fBfG+6L28gP2vXU/ZfV0M/Yfdf9g6g8o66l7L6unPmLzXff0M7V876wZ/90oG6l7V5WNuux9qP6lHVDX/f2I+nFw2Vw99fcWpW6m9qEqG7V7vD9Tf0bVqfuo9vXUffb5B1S7P+Osnv6I6v6Mc38m0T/Uf+HwWdfq2Ubd93Z9pP6W/vF9Lg6f6wF9on/O+nB4tC9fS+Tj8Anf06fD4Yv6vEwW+tXhcO96SST6HreR6GvcNqK77ZlE9+7Y0Yf9GzVbWp0p6qTfOuxP61Y600O0uP6Iqt76Y0S9fXGs+0eH6o316bF647w+7p006o7v486ZfD7X7V/Lujuj89rZfD6z7R036ozV/bH597I8N3IctHNu3B6bd6P0F+IidIidwD0R6Y4QOofvAnmXbAn8F5C9m71b9G+FvsCfoX8DeReIidAn6N6F7An0fSBvAnkTSF6I2e6G7M+ivsD9FfoB+gHyX7B3k/gS+gR7v6I6Qv6M7gGZ6O8C/RDoB+g+kP/O9v9I9G+m/f8Xof8B8mepE6EvsE976mN0D8gPUPZ9G50C6v0Feg+YvWshO0S9AnXvS3YKyN4XpU6F7C8Zew+Ieg+I3pfsPCD0S3bW9wFhn/P7gLB9wfcBofuS3wfyH7P5v9XfFfYlvw8I++n/V38X2Geor/v/w/M/2G9M3Uv+N7S99X/8w+fP2vY/fIqX0Ew9Wv8XfPjE+m8/m86VeqT/VfDhy0a8GvFqxKsRr0a8GvFqxKsRr0a8GvH7D78AnE6B6mXnU0YAAAAASUVORK5CYII=" alt="GatisBank Logo">
+                Registro GatisBank
+            </div>
             <input type="text" id="reg-name" class="input-box" placeholder="Nombre completo o Alias">
             <input type="text" id="reg-user" class="input-box" placeholder="Crea tu nombre de usuario">
             <input type="password" id="reg-pass" class="input-box" placeholder="Crea tu contraseña">
@@ -241,7 +266,10 @@
                     <div class="welcome-text">Ecosistema P2P por Cámara</div>
                     <div class="user-name" id="user-display">Usuario</div>
                 </div>
-                <div class="logo-banco">GatisBank</div>
+                <div class="logo-banco-container">
+                    <img class="gatis-icon small" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkBAMAAACCb7mCAAAAMFBMVEUAAADu7u7////m5ubv7++9vb339/fOzs7W1tbex73e3t7GxsbMzMzW1tbOzs7ex73v7+96zUorAAAACXBIWXMAAA7EAAAOxAGVKw4bAAACp0lEQVRYw+2XT2vbMByHP0e6m6X0Vug92K6HwU69DTbYToZ7b7mGwl66m8U5h0LeU29zKAn0vXWwU09NCOwepX8itWw5dtbYThf6uSCS9ennyb9kW6wE+KshGZp9bXoN7bN6R8No/N/bpxK7oK81fIn/4wK6G6uiv0mCOgNNoP8u8VzC9ySgD0lwZ6AN9E6COgNNoB8kvEs4SwI6N7+vO6AnCXgnm7o7Vf7/3S6fG2itvGgT9fT47M9U1D6f1xKqM1C6vO7A5wVUNzbyG+GfG8pI5bVfKshW0fBfG+6L28gP2vXU/ZfV0M/Yfdf9g6g8o66l7L6unPmLzXff0M7V876wZ/90oG6l7V5WNuux9qP6lHVDX/f2I+nFw2Vw99fcWpW6m9qEqG7V7vD9Tf0bVqfuo9vXUffb5B1S7P+Osnv6I6v6Mc38m0T/Uf+HwWdfq2Ubd93Z9pP6W/vF9Lg6f6wF9on/O+nB4tC9fS+Tj8Anf06fD4Yv6vEwW+tXhcO96SST6HreR6GvcNqK77ZlE9+7Y0Yf9GzVbWp0p6qTfOuxP61Y600O0uP6Iqt76Y0S9fXGs+0eH6o316bF647w+7p006o7v486ZfD7X7V/Lujuj89rZfD6z7R036ozV/bH597I8N3IctHNu3B6bd6P0F+IidIidwD0R6Y4QOofvAnmXbAn8F5C9m71b9G+FvsCfoX8DeReIidAn6N6F7An0fSBvAnkTSF6I2e6G7M+ivsD9FfoB+gHyX7B3k/gS+gR7v6I6Qv6M7gGZ6O8C/RDoB+g+kP/O9v9I9G+m/f8Xof8B8mepE6EvsE976mN0D8gPUPZ9G50C6v0Feg+YvWshO0S9AnXvS3YKyN4XpU6F7C8Zew+Ieg+I3pfsPCD0S3bW9wFhn/P7gLB9wfcBofuS3wfyH7P5v9XfFfYlvw8I++n/V38X2Geor/v/w/M/2G9M3Uv+N7S99X/8w+fP2vY/fIqX0Ew9Wv8XfPjE+m8/m86VeqT/VfDhy0a8GvFqxKsRr0a8GvFqxKsRr0a8GvH7D78AnE6B6mXnU0YAAAAASUVORK5CYII=" alt="GatisBank Logo">
+                    <div class="logo-banco">GatisBank</div>
+                </div>
             </div>
 
             <div class="main-content">
@@ -296,6 +324,9 @@
                 <input type="number" id="qr-monto-cobro" class="input-box" placeholder="Monto en Bs">
                 <button class="btn-primary" onclick="generateOfflineQR()">Crear Código QR</button>
                 <div id="qrcode-container"></div>
+                
+                <button class="btn-primary" style="background-color: #a855f7; margin-top: 10px; display: none;" id="btn-quick-scan" onclick="switchFromCobroToScan()">📷 Escanear con Cámara</button>
+
                 <p style="font-size:12px; color:#6b7280; text-align:center; margin-top:8px;">Deja que tu amigo escanee este QR con su cámara.</p>
                 <button class="btn-secondary" onclick="closeSheet('modal-cobro-qr')">Cerrar</button>
             </div>
@@ -361,7 +392,6 @@
         let currentUserKey = "";
         let usedTokens = JSON.parse(localStorage.getItem('gatis_used_tokens_cam')) || [];
         
-        // Instancias de los escáneres de la cámara
         let pagoScanner = null;
         let reciboScanner = null;
 
@@ -413,15 +443,13 @@
             if (!amt || amt <= 0) return;
             let db = getDB();
             db[currentUserKey].balance += amt;
+            // Guardamos con el emoji directo en el campo icon
             db[currentUserKey].txs.push({ type: 'in', desc: 'Depósito Manual', date: 'Hoy', amount: amt, icon: '📥' });
             saveDB(db);
             render();
             closeSheet('modal-dep');
         }
 
-        // ================= FLUJO CON CÁMARA REAL =================
-
-        // 1. GENERAR QR DE COBRO (COBRADOR)
         function generateOfflineQR() {
             const monto = parseFloat(document.getElementById('qr-monto-cobro').value);
             if (isNaN(monto) || monto <= 0) return alert("Ingresa un monto válido.");
@@ -437,117 +465,148 @@
                 monto: monto
             };
 
-            const token = btoa(JSON.stringify(cobroData));
+            const token = JSON.stringify(cobroData);
             document.getElementById('qrcode-container').innerHTML = "";
-            
-            // Dibuja el código QR real en la pantalla
             new QRCode(document.getElementById('qrcode-container'), { text: token, width: 180, height: 180 });
+            
+            document.getElementById('btn-quick-scan').style.display = 'block';
         }
 
-        // 2. ACTIVAR CÁMARA PARA PAGAR (PAGADOR)
+        function switchFromCobroToScan() {
+            closeSheet('modal-cobro-qr');
+            setTimeout(() => {
+                openSheet('modal-pago-qr');
+            }, 350);
+        }
+
         function startPagoCamera() {
             document.getElementById('pago-exitoso-block').style.display = "none";
             pagoScanner = new Html5Qrcode("camera-reader-pago");
-            
             pagoScanner.start(
-                { facingMode: "environment" }, // Forzar cámara trasera del celular
-                { fps: 10, qrbox: { width: 220, height: 220 } },
-                (qrText) => { // Función que se ejecuta si encuentra un QR
-                    pagoScanner.stop().then(() => { processPagoData(qrText); });
-                },
-                (errorMessage) => { /* Ignorar errores de enfoque continuo */ }
-            ).catch(err => alert("Error al abrir cámara: " + err));
-        }
-
-        function processPagoData(tokenRaw) {
-            try {
-                const data = JSON.parse(atob(tokenRaw));
-                if(data.tipo !== "SOLICITUD_COBRO") throw new Error();
-
-                let db = getDB();
-                if(db[currentUserKey].balance < data.monto) return alert("Saldo insuficiente.");
-
-                if(confirm(`¿Confirmas pagar Bs ${data.monto} a ${data.nombreCobrador}?`)) {
-                    db[currentUserKey].balance -= data.monto;
-                    db[currentUserKey].txs.push({
-                        type: 'out',
-                        desc: `Pago QR a ${data.nombreCobrador}`,
-                        date: 'Hoy',
-                        amount: data.monto,
-                        icon: '📷'
-                    });
-                    saveDB(db);
-                    render();
-
-                    // Generar Recibo encriptado de Confirmación
-                    const reciboData = {
-                        tipo: "RECIBO_CONFIRMADO",
-                        id: data.id,
-                        cobrador: data.cobrador,
-                        pagadorNombre: db[currentUserKey].displayName,
-                        monto: data.monto,
-                        firmaSeguridad: btoa(data.id + "GATISSECRET")
-                    };
-
-                    const receiptToken = btoa(JSON.stringify(reciboData));
-                    document.getElementById('pago-exitoso-block').style.display = "block";
-                    document.getElementById('receipt-qrcode-container').innerHTML = "";
-                    
-                    // Pinta el QR del recibo para que el cobrador lo escanee de vuelta
-                    new QRCode(document.getElementById('receipt-qrcode-container'), { text: receiptToken, width: 160, height: 160 });
-                }
-            } catch(e) {
-                alert("El código escaneado no es una solicitud válida de GatisBank.");
-                startPagoCamera(); // Volver a prender si falla
-            }
-        }
-
-        // 3. ACTIVAR CÁMARA PARA RECLAMAR DINERO (COBRADOR)
-        function startReciboCamera() {
-            reciboScanner = new Html5Qrcode("camera-reader-recibo");
-            reciboScanner.start(
                 { facingMode: "environment" },
-                { fps: 10, qrbox: { width: 220, height: 220 } },
-                (qrText) => {
-                    reciboScanner.stop().then(() => { processReciboData(qrText); });
-                },
+                { fps: 15, qrbox: { width: 230, height: 230 } },
+                (qrText) => { pagoScanner.stop().then(() => { processPagoData(qrText); }); },
                 (err) => {}
             ).catch(err => alert("Error de cámara: " + err));
         }
 
-        function processReciboData(receiptRaw) {
+        function processPagoData(qrText) {
+            let data = null;
+            let cleanText = qrText.trim();
+
             try {
-                const recibo = JSON.parse(atob(receiptRaw));
-                if(recibo.tipo !== "RECIBO_CONFIRMADO") return alert("No es un recibo válido.");
-                if(recibo.cobrador !== currentUserKey) return alert("Este cobro no te pertenece.");
-                if(usedTokens.includes(recibo.id)) return alert("Este recibo ya fue cobrado previamente.");
-                if(recibo.firmaSeguridad !== btoa(recibo.id + "GATISSECRET")) return alert("Firma digital corrupta.");
+                data = JSON.parse(cleanText);
+            } catch(e) {
+                try {
+                    data = JSON.parse(atob(cleanText));
+                } catch(err2) {
+                    data = null;
+                }
+            }
 
-                // Inyección del dinero sin internet
-                let db = getDB();
-                db[currentUserKey].balance += recibo.monto;
+            if(!data || data.tipo !== "SOLICITUD_COBRO" || !data.monto) {
+                alert("El código escaneado no es una solicitud válida de GatisBank.");
+                startPagoCamera();
+                return;
+            }
+
+            let db = getDB();
+            if(db[currentUserKey].balance < data.monto) {
+                alert("Saldo insuficiente en tu cuenta.");
+                startPagoCamera();
+                return;
+            }
+
+            if(confirm(`¿Confirmas pagar Bs ${data.monto} a ${data.nombreCobrador}?`)) {
+                db[currentUserKey].balance -= data.monto;
+                // Guardamos el emoji de salida directa
                 db[currentUserKey].txs.push({
-                    type: 'in',
-                    desc: `Cobro Recibido de ${recibo.pagadorNombre}`,
+                    type: 'out',
+                    desc: `Pago QR a ${data.nombreCobrador}`,
                     date: 'Hoy',
-                    amount: recibo.monto,
-                    icon: '🔲'
+                    amount: data.monto,
+                    icon: '💰'
                 });
-
-                usedTokens.push(recibo.id);
-                localStorage.setItem('gatis_used_tokens_cam', JSON.stringify(usedTokens));
                 saveDB(db);
                 render();
-                closeSheet('modal-cargar-recibo');
-                alert(`¡Éxito total! Dinero verificado e inyectado: Bs ${recibo.monto.toFixed(2)}`);
 
-            } catch(e) {
-                alert("Error al validar el recibo.");
-                startReciboCamera();
+                const reciboData = {
+                    tipo: "RECIBO_CONFIRMADO",
+                    id: data.id,
+                    cobrador: data.cobrador,
+                    pagadorNombre: db[currentUserKey].displayName,
+                    monto: data.monto,
+                    firmaSeguridad: "VALID-GATIS-" + data.id
+                };
+
+                const receiptToken = JSON.stringify(reciboData);
+                document.getElementById('pago-exitoso-block').style.display = "block";
+                document.getElementById('receipt-qrcode-container').innerHTML = "";
+                new QRCode(document.getElementById('receipt-qrcode-container'), { text: receiptToken, width: 160, height: 160 });
+            } else {
+                startPagoCamera();
             }
         }
 
-        // PAGO SERVICIOS
+        function startReciboCamera() {
+            reciboScanner = new Html5Qrcode("camera-reader-recibo");
+            reciboScanner.start(
+                { facingMode: "environment" },
+                { fps: 15, qrbox: { width: 230, height: 230 } },
+                (qrText) => { reciboScanner.stop().then(() => { processReciboData(qrText); }); },
+                (err) => {}
+            ).catch(err => alert("Error de cámara: " + err));
+        }
+
+        function processReciboData(qrText) {
+            let recibo = null;
+            let cleanText = qrText.trim();
+
+            try {
+                recibo = JSON.parse(cleanText);
+            } catch(e) {
+                try {
+                    recibo = JSON.parse(atob(cleanText));
+                } catch(err2) {
+                    recibo = null;
+                }
+            }
+
+            if(!recibo || recibo.tipo !== "RECIBO_CONFIRMADO") {
+                alert("Recibo inválido o corrupto.");
+                startReciboCamera();
+                return;
+            }
+            if(recibo.cobrador !== currentUserKey) {
+                alert("Este recibo de cobro no te pertenece a ti.");
+                startReciboCamera();
+                return;
+            }
+            if(usedTokens.includes(recibo.id)) {
+                alert("Este código QR ya fue cobrado anteriormente.");
+                startReciboCamera();
+                return;
+            }
+
+            let db = getDB();
+            db[currentUserKey].balance += recibo.monto;
+            // Guardamos el emoji de entrada directo
+            db[currentUserKey].txs.push({
+                type: 'in',
+                desc: `Cobro de ${recibo.pagadorNombre}`,
+                date: 'Hoy',
+                amount: recibo.monto,
+                icon: '💰'
+            });
+
+            usedTokens.push(recibo.id);
+            localStorage.setItem('gatis_used_tokens_cam', JSON.stringify(usedTokens));
+            saveDB(db);
+            render();
+            closeSheet('modal-cargar-recibo');
+            alert(`¡Fondos inyectados con éxito! +Bs ${recibo.monto.toFixed(2)}`);
+        }
+
         function executeServicePayment() {
             const mnt = parseFloat(document.getElementById('servicio-monto').value);
             if (isNaN(mnt) || mnt <= 0) return alert("Monto incorrecto.");
@@ -561,7 +620,6 @@
             alert("Servicio Pagado Offline.");
         }
 
-        // INTERFAZ RENDER
         function render() {
             if(!currentUserKey) return;
             let db = getDB();
@@ -569,13 +627,18 @@
             document.getElementById('balance-txt').innerText = `Bs ${acc.balance.toLocaleString('es-BO', { minimumFractionDigits: 2 })}`;
             const box = document.getElementById('history-box');
             box.innerHTML = '';
+            
             [...acc.txs].reverse().forEach(t => {
                 const row = document.createElement('div');
                 row.className = 'transaction-row';
                 const isInc = t.type === 'in';
+                
+                // Forzamos que siempre renderice el emoji guardado en t.icon, o un comodín de monedita si no hay ninguno.
+                const emojiAvatar = t.icon || '💰';
+
                 row.innerHTML = `
                     <div class="tx-main">
-                        <div class="tx-avatar">${t.icon}</div>
+                        <div class="tx-avatar">${emojiAvatar}</div>
                         <div><div class="tx-title">${t.desc}</div><div class="tx-date">${t.date}</div></div>
                     </div>
                     <div class="tx-amount ${isInc ? 'amount-positive' : 'amount-negative'}">${isInc ? '+' : '-'}Bs ${t.amount.toFixed(2)}</div>
@@ -588,8 +651,6 @@
             const el = document.getElementById(id);
             el.style.display = 'flex';
             setTimeout(() => el.classList.add('active'), 10);
-            
-            // Disparar las cámaras en cuanto se abra su ventana correspondiente
             if(id === 'modal-pago-qr') startPagoCamera();
             if(id === 'modal-cargar-recibo') startReciboCamera();
         }
@@ -597,19 +658,16 @@
         function closeSheet(id) {
             const el = document.getElementById(id);
             el.classList.remove('active');
-            
-            // Apagar las cámaras limpiamente si el usuario cierra la pestaña para no gastar batería
-            if(id === 'modal-pago-qr' && pagoScanner) {
-                pagoScanner.stop().catch(()=>{});
-            }
-            if(id === 'modal-cargar-recibo' && reciboScanner) {
-                reciboScanner.stop().catch(()=>{});
-            }
+            if(id === 'modal-pago-qr' && pagoScanner) pagoScanner.stop().catch(()=>{});
+            if(id === 'modal-cargar-recibo' && reciboScanner) reciboScanner.stop().catch(()=>{});
 
             setTimeout(() => {
                 el.style.display = 'none';
                 el.querySelectorAll('input').forEach(i => i.value = '');
-                if(id === 'modal-cobro-qr') document.getElementById('qrcode-container').innerHTML = "";
+                if(id === 'modal-cobro-qr') {
+                    document.getElementById('qrcode-container').innerHTML = "";
+                    document.getElementById('btn-quick-scan').style.display = 'none';
+                }
             }, 300);
         }
     </script>
