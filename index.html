@@ -3,235 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GatisBank Móvil P2P Cámara</title>
+    <title>GatisBank Móvil Full</title>
+    <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-
-        body {
-            background-color: #f3f4f6;
-            color: #1f2937;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .app-container {
-            width: 100%;
-            max-width: 412px;
-            height: 840px;
-            background-color: #ffffff;
-            border-radius: 36px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            border: 6px solid #e5e7eb;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
-
-        /* VISTAS DE AUTENTICACIÓN */
-        .auth-screen {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #ffffff;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 40px;
-        }
-
-        .login-logo {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 36px;
-            font-weight: 800;
-            color: #0284c7;
-            text-align: center;
-            margin-bottom: 30px;
-            gap: 10px;
-        }
-
-        .gatis-icon {
-            width: 80px;
-            height: 80px;
-        }
-
-        .gatis-icon.small {
-            width: 32px;
-            height: 32px;
-        }
-
-        .auth-toggle-link {
-            text-align: center;
-            color: #0284c7;
-            font-size: 14px;
-            font-weight: 600;
-            margin-top: 15px;
-            cursor: pointer;
-        }
-
-        /* PANTALLA PRINCIPAL */
-        #main-app {
-            display: none;
-            flex-direction: column;
-            height: 100%;
-        }
-
-        .header {
-            padding: 24px 20px 16px;
-            background-color: #ffffff;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #f3f4f6;
-        }
-
-        .welcome-text { font-size: 14px; color: #6b7280; }
-        .user-name { font-size: 18px; font-weight: 700; color: #111827; }
-        
-        .logo-banco-container {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .logo-banco { font-size: 20px; font-weight: 800; color: #0284c7; }
-
-        .main-content {
-            padding: 20px;
-            flex-grow: 1;
-            overflow-y: auto;
-            background-color: #f9fafb;
-            padding-bottom: 90px;
-        }
-
-        .credit-card {
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            padding: 22px;
-            border-radius: 20px;
-            color: white;
-            box-shadow: 0 10px 15px -3px rgba(15, 23, 42, 0.3);
-            margin-bottom: 24px;
-        }
-
-        .card-type { font-size: 12px; font-weight: 600; text-transform: uppercase; color: #38bdf8; }
-        .card-balance { font-size: 30px; font-weight: 700; margin: 14px 0; }
-        .card-number { font-family: monospace; font-size: 16px; letter-spacing: 2px; opacity: 0.85; }
-
-        /* Grid Acciones */
-        .actions-container {
-            background-color: #ffffff;
-            border-radius: 16px;
-            padding: 16px;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            margin-bottom: 24px;
-        }
-
-        .action-button {
-            background: none;
-            border: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .icon-wrapper {
-            width: 48px;
-            height: 48px;
-            background-color: #f0fdf4;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 6px;
-        }
-        .icon-wrapper.blue { background-color: #f0f9ff; }
-        .icon-wrapper.purple { background-color: #f5f3ff; }
-        .icon-wrapper.amber { background-color: #fffbeb; }
-
-        .action-icon { font-size: 20px; }
-        .action-label { font-size: 11px; font-weight: 600; color: #4b5563; text-align: center; }
-
-        /* Historial */
-        .section-title { font-size: 15px; font-weight: 700; color: #374151; margin-bottom: 12px; }
-        .history-card { background-color: #ffffff; border-radius: 16px; padding: 4px 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
-        .transaction-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid #f3f4f6; }
-        .transaction-row:last-child { border-bottom: none; }
-        .tx-main { display: flex; align-items: center; gap: 12px; }
-        .tx-avatar { width: 40px; height: 40px; background-color: #f3f4f6; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 20px; }
-        .tx-title { font-size: 14px; font-weight: 600; }
-        .tx-date { font-size: 12px; color: #9ca3af; }
-        .tx-amount { font-size: 14px; font-weight: 700; }
-        .amount-positive { color: #16a34a; }
-        .amount-negative { color: #1f2937; }
-
-        /* Nav inferior */
-        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 72px; background-color: #ffffff; border-top: 1px solid #e5e7eb; display: grid; grid-template-columns: repeat(3, 1fr); align-items: center; text-align: center; }
-        .nav-item { color: #9ca3af; font-size: 11px; font-weight: 600; display: flex; flex-direction: column; gap: 4px; cursor: pointer; }
-        .nav-item.active { color: #0284c7; }
-
-        /* Modales */
-        .modal-overlay {
-            display: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
-            z-index: 100;
-            align-items: flex-end;
-        }
-
-        .modal-sheet {
-            width: 100%;
-            background-color: #ffffff;
-            border-radius: 24px 24px 0 0;
-            padding: 24px 24px 40px 24px;
-            box-shadow: 0 -10px 25px rgba(0,0,0,0.1);
-            transform: translateY(100%);
-            transition: transform 0.3s ease-out;
-            max-height: 85%;
-            overflow-y: auto;
-        }
-
-        .modal-overlay.active .modal-sheet { transform: translateY(0); }
-        .modal-header { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
-        
-        .input-box {
-            width: 100%;
-            padding: 14px;
-            background-color: #f9fafb;
-            border: 1px solid #d1d5db;
-            border-radius: 12px;
-            font-size: 15px;
-            margin-bottom: 16px;
-            outline: none;
-        }
-        .input-box:focus { border-color: #0284c7; background-color: #ffffff; }
-        
-        .btn-primary { width: 100%; padding: 14px; background-color: #0284c7; border: none; border-radius: 12px; color: white; font-weight: 600; font-size: 15px; cursor: pointer; }
-        .btn-secondary { width: 100%; padding: 12px; background: none; border: none; color: #6b7280; font-size: 14px; margin-top: 8px; cursor: pointer; }
-
-        #qrcode-container, #receipt-qrcode-container { display: flex; justify-content: center; margin: 15px 0; padding: 10px; background: white; border-radius: 12px; }
-        .camera-scanner-view { width: 100%; background: #000000; border-radius: 16px; overflow: hidden; margin-bottom: 15px; border: 2px solid #0284c7; }
-    </style>
 </head>
 <body>
 
@@ -239,7 +14,7 @@
 
         <div id="login-screen" class="auth-screen">
             <div class="login-logo">
-                <img class="gatis-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkBAMAAACCb7mCAAAAMFBMVEUAAADu7u7////m5ubv7++9vb339/fOzs7W1tbex73e3t7GxsbMzMzW1tbOzs7ex73v7+96zUorAAAACXBIWXMAAA7EAAAOxAGVKw4bAAACp0lEQVRYw+2XT2vbMByHP0e6m6X0Vug92K6HwU69DTbYToZ7b7mGwl66m8U5h0LeU29zKAn0vXWwU09NCOwepX8itWw5dtbYThf6uSCS9ennyb9kW6wE+KshGZp9bXoN7bN6R8No/N/bpxK7oK81fIn/4wK6G6uiv0mCOgNNoP8u8VzC9ySgD0lwZ6AN9E6COgNNoB8kvEs4SwI6N7+vO6AnCXgnm7o7Vf7/3S6fG2itvGgT9fT47M9U1D6f1xKqM1C6vO7A5wVUNzbyG+GfG8pI5bVfKshW0fBfG+6L28gP2vXU/ZfV0M/Yfdf9g6g8o66l7L6unPmLzXff0M7V876wZ/90oG6l7V5WNuux9qP6lHVDX/f2I+nFw2Vw99fcWpW6m9qEqG7V7vD9Tf0bVqfuo9vXUffb5B1S7P+Osnv6I6v6Mc38m0T/Uf+HwWdfq2Ubd93Z9pP6W/vF9Lg6f6wF9on/O+nB4tC9fS+Tj8Anf06fD4Yv6vEwW+tXhcO96SST6HreR6GvcNqK77ZlE9+7Y0Yf9GzVbWp0p6qTfOuxP61Y600O0uP6Iqt76Y0S9fXGs+0eH6o316bF647w+7p006o7v486ZfD7X7V/Lujuj89rZfD6z7R036ozV/bH597I8N3IctHNu3B6bd6P0F+IidIidwD0R6Y4QOofvAnmXbAn8F5C9m71b9G+FvsCfoX8DeReIidAn6N6F7An0fSBvAnkTSF6I2e6G7M+ivsD9FfoB+gHyX7B3k/gS+gR7v6I6Qv6M7gGZ6O8C/RDoB+g+kP/O9v9I9G+m/f8Xof8B8mepE6EvsE976mN0D8gPUPZ9G50C6v0Feg+YvWshO0S9AnXvS3YKyN4XpU6F7C8Zew+Ieg+I3pfsPCD0S3bW9wFhn/P7gLB9wfcBofuS3wfyH7P5v9XfFfYlvw8I++n/V38X2Geor/v/w/M/2G9M3Uv+N7S99X/8w+fP2vY/fIqX0Ew9Wv8XfPjE+m8/m86VeqT/VfDhy0a8GvFqxKsRr0a8GvFqxKsRr0a8GvH7D78AnE6B6mXnU0YAAAAASUVORK5CYII=" alt="GatisBank Logo">
+                <span class="michi-logo">🐱</span>
                 GatisBank
             </div>
             <input type="text" id="login-user" class="input-box" placeholder="Usuario">
@@ -250,7 +25,7 @@
 
         <div id="register-screen" class="auth-screen" style="display: none;">
             <div class="login-logo">
-                <img class="gatis-icon" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkBAMAAACCb7mCAAAAMFBMVEUAAADu7u7////m5ubv7++9vb339/fOzs7W1tbex73e3t7GxsbMzMzW1tbOzs7ex73v7+96zUorAAAACXBIWXMAAA7EAAAOxAGVKw4bAAACp0lEQVRYw+2XT2vbMByHP0e6m6X0Vug92K6HwU69DTbYToZ7b7mGwl66m8U5h0LeU29zKAn0vXWwU09NCOwepX8itWw5dtbYThf6uSCS9ennyb9kW6wE+KshGZp9bXoN7bN6R8No/N/bpxK7oK81fIn/4wK6G6uiv0mCOgNNoP8u8VzC9ySgD0lwZ6AN9E6COgNNoB8kvEs4SwI6N7+vO6AnCXgnm7o7Vf7/3S6fG2itvGgT9fT47M9U1D6f1xKqM1C6vO7A5wVUNzbyG+GfG8pI5bVfKshW0fBfG+6L28gP2vXU/ZfV0M/Yfdf9g6g8o66l7L6unPmLzXff0M7V876wZ/90oG6l7V5WNuux9qP6lHVDX/f2I+nFw2Vw99fcWpW6m9qEqG7V7vD9Tf0bVqfuo9vXUffb5B1S7P+Osnv6I6v6Mc38m0T/Uf+HwWdfq2Ubd93Z9pP6W/vF9Lg6f6wF9on/O+nB4tC9fS+Tj8Anf06fD4Yv6vEwW+tXhcO96SST6HreR6GvcNqK77ZlE9+7Y0Yf9GzVbWp0p6qTfOuxP61Y600O0uP6Iqt76Y0S9fXGs+0eH6o316bF647w+7p006o7v486ZfD7X7V/Lujuj89rZfD6z7R036ozV/bH597I8N3IctHNu3B6bd6P0F+IidIidwD0R6Y4QOofvAnmXbAn8F5C9m71b9G+FvsCfoX8DeReIidAn6N6F7An0fSBvAnkTSF6I2e6G7M+ivsD9FfoB+gHyX7B3k/gS+gR7v6I6Qv6M7gGZ6O8C/RDoB+g+kP/O9v9I9G+m/f8Xof8B8mepE6EvsE976mN0D8gPUPZ9G50C6v0Feg+YvWshO0S9AnXvS3YKyN4XpU6F7C8Zew+Ieg+I3pfsPCD0S3bW9wFhn/P7gLB9wfcBofuS3wfyH7P5v9XfFfYlvw8I++n/V38X2Geor/v/w/M/2G9M3Uv+N7S99X/8w+fP2vY/fIqX0Ew9Wv8XfPjE+m8/m86VeqT/VfDhy0a8GvFqxKsRr0a8GvFqxKsRr0a8GvH7D78AnE6B6mXnU0YAAAAASUVORK5CYII=" alt="GatisBank Logo">
+                <span class="michi-logo">🐱</span>
                 Registro GatisBank
             </div>
             <input type="text" id="reg-name" class="input-box" placeholder="Nombre completo o Alias">
@@ -263,47 +38,89 @@
         <div id="main-app">
             <div class="header">
                 <div>
-                    <div class="welcome-text">Ecosistema P2P por Cámara</div>
+                    <div class="welcome-text">Billetera P2P & Offline</div>
                     <div class="user-name" id="user-display">Usuario</div>
                 </div>
                 <div class="logo-banco-container">
-                    <img class="gatis-icon small" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkBAMAAACCb7mCAAAAMFBMVEUAAADu7u7////m5ubv7++9vb339/fOzs7W1tbex73e3t7GxsbMzMzW1tbOzs7ex73v7+96zUorAAAACXBIWXMAAA7EAAAOxAGVKw4bAAACp0lEQVRYw+2XT2vbMByHP0e6m6X0Vug92K6HwU69DTbYToZ7b7mGwl66m8U5h0LeU29zKAn0vXWwU09NCOwepX8itWw5dtbYThf6uSCS9ennyb9kW6wE+KshGZp9bXoN7bN6R8No/N/bpxK7oK81fIn/4wK6G6uiv0mCOgNNoP8u8VzC9ySgD0lwZ6AN9E6COgNNoB8kvEs4SwI6N7+vO6AnCXgnm7o7Vf7/3S6fG2itvGgT9fT47M9U1D6f1xKqM1C6vO7A5wVUNzbyG+GfG8pI5bVfKshW0fBfG+6L28gP2vXU/ZfV0M/Yfdf9g6g8o66l7L6unPmLzXff0M7V876wZ/90oG6l7V5WNuux9qP6lHVDX/f2I+nFw2Vw99fcWpW6m9qEqG7V7vD9Tf0bVqfuo9vXUffb5B1S7P+Osnv6I6v6Mc38m0T/Uf+HwWdfq2Ubd93Z9pP6W/vF9Lg6f6wF9on/O+nB4tC9fS+Tj8Anf06fD4Yv6vEwW+tXhcO96SST6HreR6GvcNqK77ZlE9+7Y0Yf9GzVbWp0p6qTfOuxP61Y600O0uP6Iqt76Y0S9fXGs+0eH6o316bF647w+7p006o7v486ZfD7X7V/Lujuj89rZfD6z7R036ozV/bH597I8N3IctHNu3B6bd6P0F+IidIidwD0R6Y4QOofvAnmXbAn8F5C9m71b9G+FvsCfoX8DeReIidAn6N6F7An0fSBvAnkTSF6I2e6G7M+ivsD9FfoB+gHyX7B3k/gS+gR7v6I6Qv6M7gGZ6O8C/RDoB+g+kP/O9v9I9G+m/f8Xof8B8mepE6EvsE976mN0D8gPUPZ9G50C6v0Feg+YvWshO0S9AnXvS3YKyN4XpU6F7C8Zew+Ieg+I3pfsPCD0S3bW9wFhn/P7gLB9wfcBofuS3wfyH7P5v9XfFfYlvw8I++n/V38X2Geor/v/w/M/2G9M3Uv+N7S99X/8w+fP2vY/fIqX0Ew9Wv8XfPjE+m8/m86VeqT/VfDhy0a8GvFqxKsRr0a8GvFqxKsRr0a8GvH7D78AnE6B6mXnU0YAAAAASUVORK5CYII=" alt="GatisBank Logo">
+                    <span style="font-size: 24px;">🐱</span>
                     <div class="logo-banco">GatisBank</div>
                 </div>
             </div>
 
             <div class="main-content">
-                <div class="credit-card">
-                    <div class="card-type">Caja de Ahorros Offline</div>
-                    <div class="card-balance" id="balance-txt">Bs 0.00</div>
-                    <div class="card-number">•••• •••• •••• 4026</div>
+                
+                <div class="tabs-container">
+                    <button id="tab-billetera" class="active" onclick="switchMainTab('billetera')">Mi Billetera</button>
+                    <button id="tab-gatissecure" onclick="switchMainTab('gatissecure')">GatisSecure</button>
                 </div>
 
-                <div class="actions-container">
-                    <button class="action-button" onclick="openSheet('modal-dep')">
-                        <div class="icon-wrapper"><span class="action-icon">📥</span></div>
-                        <span class="action-label">Depósito</span>
-                    </button>
-                    <button class="action-button" onclick="openSheet('modal-cobro-qr')">
-                        <div class="icon-wrapper blue"><span class="action-icon">🔲</span></div>
-                        <span class="action-label">1. Cobrar</span>
-                    </button>
-                    <button class="action-button" onclick="openSheet('modal-pago-qr')">
-                        <div class="icon-wrapper purple"><span class="action-icon">📷</span></div>
-                        <span class="action-label">2. Escanear</span>
-                    </button>
-                    <button class="action-button" onclick="openSheet('modal-cargar-recibo')">
-                        <div class="icon-wrapper amber"><span class="action-icon">✅</span></div>
-                        <span class="action-label">3. Validar</span>
-                    </button>
+                <div id="content-billetera" class="main-tab-content">
+                    <div class="credit-card">
+                        <div class="card-type">Caja de Ahorros Offline</div>
+                        <div class="card-balance" id="balance-txt">Bs 0.00</div>
+                        <div class="card-number">•••• •••• •••• 4026</div>
+                    </div>
+
+                    <div class="actions-container">
+                        <button class="action-button" id="btn-deposito-abono" onclick="openSheet('modal-dep')">
+                            <div class="icon-wrapper"><span class="action-icon">📥</span></div>
+                            <span class="action-label">Depósito</span>
+                        </button>
+                        <button class="action-button" onclick="openSheet('modal-cobro-qr')">
+                            <div class="icon-wrapper blue"><span class="action-icon">🔲</span></div>
+                            <span class="action-label">1. Cobrar</span>
+                        </button>
+                        <button class="action-button" onclick="openSheet('modal-pago-qr')">
+                            <div class="icon-wrapper purple"><span class="action-icon">📷</span></div>
+                            <span class="action-label">2. Escanear</span>
+                        </button>
+                        <button class="action-button" onclick="openSheet('modal-cargar-recibo')">
+                            <div class="icon-wrapper amber"><span class="action-icon">✅</span></div>
+                            <span class="action-label">3. Validar</span>
+                        </button>
+                    </div>
+
+                    <div class="actions-container secondary">
+                        <button class="action-button" onclick="openSheet('modal-servicios')">
+                            <div class="icon-wrapper purple-light"><span class="action-icon">⚡</span></div>
+                            <span class="action-label">Pagar</span>
+                        </button>
+                        <button class="action-button" onclick="openSheet('modal-gatiscash')">
+                            <div class="icon-wrapper amber-light"><span class="action-icon">🚪</span></div>
+                            <span class="action-label">GatisCash</span>
+                        </button>
+                    </div>
+
+                    <div class="section-title">Movimientos Offline Verificados</div>
+                    <div class="history-card" id="history-box"></div>
                 </div>
 
-                <div class="section-title">Movimientos Verificados</div>
-                <div class="history-card" id="history-box"></div>
+                <div id="content-gatissecure" class="main-tab-content" style="display:none;">
+                    <div class="secure-card">
+                        <div class="section-title">Controles de Tarjeta Gatis Débito</div>
+                        
+                        <div class="secure-option">
+                            <label>Habilitar Compras por Internet</label>
+                            <label class="switch">
+                                <input type="checkbox" id="check-internet" onchange="toggleSecurity('internet')">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+
+                        <div class="secure-option">
+                            <label>Habilitar Viajes al Exterior</label>
+                            <label class="switch">
+                                <input type="checkbox" id="check-exterior" onchange="toggleSecurity('exterior')">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <div class="bottom-nav">
-                <div class="nav-item active"><span style="font-size:20px;">🏠</span><span>Inicio</span></div>
+                <div class="nav-item active" onclick="switchMainTab('billetera')"><span style="font-size:20px;">🏠</span><span>Inicio</span></div>
                 <div class="nav-item" onclick="openSheet('modal-servicios')"><span style="font-size:20px;">⚡</span><span>Servicios</span></div>
                 <div class="nav-item" onclick="handleLogout()"><span style="font-size:20px;">🔒</span><span>Cerrar</span></div>
             </div>
@@ -311,365 +128,90 @@
 
         <div class="modal-overlay" id="modal-dep">
             <div class="modal-sheet">
-                <div class="modal-header">Cargar dinero simulado</div>
-                <input type="number" id="input-dep-amount" class="input-box" placeholder="Monto en Bs">
-                <button class="btn-primary" onclick="doDeposit()">Cargar Fondos</button>
+                <div class="modal-header">Abonar simulado de dinero</div>
+                <input type="number" id="input-dep-amount" class="input-box" placeholder="Monto Bs">
+                <button class="btn-primary" onclick="doDeposit()">Abonar</button>
                 <button class="btn-secondary" onclick="closeSheet('modal-dep')">Cancelar</button>
             </div>
         </div>
 
         <div class="modal-overlay" id="modal-cobro-qr">
             <div class="modal-sheet">
-                <div class="modal-header">Paso 1: Generar QR de Cobro</div>
-                <input type="number" id="qr-monto-cobro" class="input-box" placeholder="Monto en Bs">
-                <button class="btn-primary" onclick="generateOfflineQR()">Crear Código QR</button>
+                <div class="modal-header">Generar QR de Cobro</div>
+                <input type="number" id="qr-monto-cobro" class="input-box" placeholder="Monto Bs">
+                <button class="btn-primary" onclick="requestGatisToken('generateOfflineQR')">Generar (Requiere GatisToken)</button>
                 <div id="qrcode-container"></div>
                 
-                <button class="btn-primary" style="background-color: #a855f7; margin-top: 10px; display: none;" id="btn-quick-scan" onclick="switchFromCobroToScan()">📷 Escanear con Cámara</button>
-
-                <p style="font-size:12px; color:#6b7280; text-align:center; margin-top:8px;">Deja que tu amigo escanee este QR con su cámara.</p>
+                <button class="btn-primary" style="background-color: #a855f7; margin-top: 10px; display: none;" id="btn-quick-scan" onclick="switchFromCobroToScan()">📷 Ir a Escáner de Pago</button>
                 <button class="btn-secondary" onclick="closeSheet('modal-cobro-qr')">Cerrar</button>
             </div>
         </div>
 
         <div class="modal-overlay" id="modal-pago-qr">
             <div class="modal-sheet">
-                <div class="modal-header">Paso 2: Escanear Código del Cobrador</div>
-                
+                <div class="modal-header">Paso 2: Escanear Solicitud</div>
                 <div id="camera-reader-pago" class="camera-scanner-view"></div>
 
                 <div id="pago-exitoso-block" style="display:none; margin-top:15px; border-top:1px dashed #d1d5db; padding-top:15px;">
-                    <p style="color:#16a34a; font-weight:700; text-align:center; margin-bottom:10px;">¡Pago Procesado y Descontado!</p>
-                    <p style="font-size:12px; text-align:center; margin-bottom:10px;">Muestra este **QR de Recibo** al cobrador para que valide sus fondos:</p>
+                    <p style="color:#16a34a; font-weight:700; text-align:center; margin-bottom:10px;">¡Pago Descontado!</p>
                     <div id="receipt-qrcode-container"></div>
                 </div>
-
-                <button class="btn-secondary" onclick="closeSheet('modal-pago-qr')">Cerrar Cámara</button>
+                <button class="btn-secondary" onclick="closeSheet('modal-pago-qr')">Cerrar</button>
             </div>
         </div>
 
         <div class="modal-overlay" id="modal-cargar-recibo">
             <div class="modal-sheet">
-                <div class="modal-header">Paso 3: Escanear Recibo de Confirmación</div>
-                <p style="font-size:12px; color:#4b5563; margin-bottom:12px;">Apunta tu cámara al **QR de Recibo** generado por el celular de tu amigo:</p>
-                
+                <div class="modal-header">Paso 3: Validar Recibo de Pago</div>
                 <div id="camera-reader-recibo" class="camera-scanner-view"></div>
-
-                <button class="btn-secondary" onclick="closeSheet('modal-cargar-recibo')">Cerrar Cámara</button>
+                <button class="btn-secondary" onclick="closeSheet('modal-cargar-recibo')">Cerrar</button>
             </div>
         </div>
 
         <div class="modal-overlay" id="modal-servicios">
             <div class="modal-sheet">
-                <div class="modal-header">Pago de Servicios</div>
-                <select id="servicio-empresa" class="select-box">
-                    <option value="DELAPAZ">DELAPAZ</option>
-                    <option value="EPSAS">EPSAS</option>
-                    <option value="CIBA">CIBA (Colegio Achumani)</option>
+                <div class="modal-header">Pago de Servicios & Recaudaciones</div>
+                <select id="servicio-tipo" class="input-box">
+                    <option value="DELAPAZ">DELAPAZ (Luz)</option>
+                    <option value="AXS">AXS (Internet/Cable)</option>
+                    <option value="ENTEL">Entel (Telefónicas)</option>
+                    <option value="CIBA">Colegio CIBA</option>
+                    <option value="YANBAL">Yanbal / Transbel</option>
                 </select>
-                <input type="text" id="servicio-codigo" class="input-box" placeholder="Código de Cuenta">
+                <input type="text" id="servicio-codigo" class="input-box" placeholder="Código de Cliente / Cuenta">
                 <input type="number" id="servicio-monto" class="input-box" placeholder="Monto Bs">
-                <button class="btn-primary" onclick="executeServicePayment()">Pagar Offline</button>
-                <button class="btn-secondary" onclick="closeSheet('modal-servicios')">Volver</button>
+                <button class="btn-primary" style="background-color: #7c3aed;" onclick="executeServicePayment()">Confirmar Pago Offline</button>
+                <button class="btn-secondary" onclick="closeSheet('modal-servicios')">Cerrar</button>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="modal-gatiscash">
+            <div class="modal-sheet">
+                <div class="modal-header">GatisCash (Retiro Cajero Sin Tarjeta)</div>
+                <div class="secure-card">
+                    <input type="number" id="cash-monto" class="input-box" placeholder="Monto Bs (0.00)">
+                    <button class="btn-primary" style="background-color: #f59e0b;" onclick="requestGatisToken('generateCashCode')">Generar Código GatisCash</button>
+                    
+                    <div id="cash-code-block" style="display:none; text-align:center; margin-top:15px; border-top:1px dashed #d1d5db; padding-top:15px;">
+                        <p id="cash-code-txt" style="font-size:32px; font-weight:800; color:#1f2937; letter-spacing:8px;">----</p>
+                    </div>
+                </div>
+                <button class="btn-secondary" onclick="closeSheet('modal-gatiscash')">Cerrar</button>
+            </div>
+        </div>
+
+        <div class="modal-overlay" id="modal-token-request">
+            <div class="modal-sheet">
+                <div class="modal-header">Validación GatisToken Virtual</div>
+                <p style="font-size:12px; color:#4b5563; text-align:center; margin-bottom:15px;">Ingresa el código cambiante de tu app GatisToken de hoy.</p>
+                <input type="text" id="token-input" class="input-box" placeholder="Ingresar Código Token" inputmode="numeric" maxlength="6">
+                <button class="btn-primary" style="background-color: #111827;" onclick="validateGatisToken()">Autorizar Operación</button>
+                <button class="btn-secondary" onclick="closeSheet('modal-token-request')">Cancelar</button>
             </div>
         </div>
 
     </div>
 
-    <script>
-        // BASE DE DATOS LOCAL
-        if (!localStorage.getItem('gatis_camera_db')) {
-            const defaultDB = {
-                "matias": { password: "4026", displayName: "Matías J.", balance: 1000.00, txs: [] },
-                "amigo": { password: "1234", displayName: "Amigo Gatis", balance: 500.00, txs: [] }
-            };
-            localStorage.setItem('gatis_camera_db', JSON.stringify(defaultDB));
-        }
-
-        function getDB() { return JSON.parse(localStorage.getItem('gatis_camera_db')); }
-        function saveDB(db) { localStorage.setItem('gatis_camera_db', JSON.stringify(db)); }
-
-        let currentUserKey = "";
-        let usedTokens = JSON.parse(localStorage.getItem('gatis_used_tokens_cam')) || [];
-        
-        let pagoScanner = null;
-        let reciboScanner = null;
-
-        function showRegisterScreen() {
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('register-screen').style.display = 'flex';
-        }
-        function showLoginScreen() {
-            document.getElementById('register-screen').style.display = 'none';
-            document.getElementById('login-screen').style.display = 'flex';
-        }
-
-        function handleRegister() {
-            const name = document.getElementById('reg-name').value.trim();
-            const user = document.getElementById('reg-user').value.trim().toLowerCase();
-            const pass = document.getElementById('reg-pass').value;
-            if(!name || !user || !pass) return alert("Llena los campos.");
-            let db = getDB();
-            if(db[user]) return alert("El usuario ya existe.");
-            db[user] = { password: pass, displayName: name, balance: 0.00, txs: [] };
-            saveDB(db);
-            alert("¡Cuenta Creada!");
-            showLoginScreen();
-        }
-
-        function handleLogin() {
-            const u = document.getElementById('login-user').value.trim().toLowerCase();
-            const p = document.getElementById('login-pass').value;
-            let db = getDB();
-            if(db[u] && db[u].password === p) {
-                currentUserKey = u;
-                document.getElementById('user-display').innerText = db[currentUserKey].displayName;
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('main-app').style.display = 'flex';
-                render();
-            } else {
-                alert("Usuario o clave incorrectos.");
-            }
-        }
-
-        function handleLogout() {
-            currentUserKey = "";
-            document.getElementById('main-app').style.display = 'none';
-            document.getElementById('login-screen').style.display = 'flex';
-        }
-
-        function doDeposit() {
-            const amt = parseFloat(document.getElementById('input-dep-amount').value);
-            if (!amt || amt <= 0) return;
-            let db = getDB();
-            db[currentUserKey].balance += amt;
-            // Guardamos con el emoji directo en el campo icon
-            db[currentUserKey].txs.push({ type: 'in', desc: 'Depósito Manual', date: 'Hoy', amount: amt, icon: '📥' });
-            saveDB(db);
-            render();
-            closeSheet('modal-dep');
-        }
-
-        function generateOfflineQR() {
-            const monto = parseFloat(document.getElementById('qr-monto-cobro').value);
-            if (isNaN(monto) || monto <= 0) return alert("Ingresa un monto válido.");
-
-            let db = getDB();
-            const txId = "TX-" + Math.floor(Math.random() * 1000000);
-
-            const cobroData = {
-                tipo: "SOLICITUD_COBRO",
-                id: txId,
-                cobrador: currentUserKey,
-                nombreCobrador: db[currentUserKey].displayName,
-                monto: monto
-            };
-
-            const token = JSON.stringify(cobroData);
-            document.getElementById('qrcode-container').innerHTML = "";
-            new QRCode(document.getElementById('qrcode-container'), { text: token, width: 180, height: 180 });
-            
-            document.getElementById('btn-quick-scan').style.display = 'block';
-        }
-
-        function switchFromCobroToScan() {
-            closeSheet('modal-cobro-qr');
-            setTimeout(() => {
-                openSheet('modal-pago-qr');
-            }, 350);
-        }
-
-        function startPagoCamera() {
-            document.getElementById('pago-exitoso-block').style.display = "none";
-            pagoScanner = new Html5Qrcode("camera-reader-pago");
-            pagoScanner.start(
-                { facingMode: "environment" },
-                { fps: 15, qrbox: { width: 230, height: 230 } },
-                (qrText) => { pagoScanner.stop().then(() => { processPagoData(qrText); }); },
-                (err) => {}
-            ).catch(err => alert("Error de cámara: " + err));
-        }
-
-        function processPagoData(qrText) {
-            let data = null;
-            let cleanText = qrText.trim();
-
-            try {
-                data = JSON.parse(cleanText);
-            } catch(e) {
-                try {
-                    data = JSON.parse(atob(cleanText));
-                } catch(err2) {
-                    data = null;
-                }
-            }
-
-            if(!data || data.tipo !== "SOLICITUD_COBRO" || !data.monto) {
-                alert("El código escaneado no es una solicitud válida de GatisBank.");
-                startPagoCamera();
-                return;
-            }
-
-            let db = getDB();
-            if(db[currentUserKey].balance < data.monto) {
-                alert("Saldo insuficiente en tu cuenta.");
-                startPagoCamera();
-                return;
-            }
-
-            if(confirm(`¿Confirmas pagar Bs ${data.monto} a ${data.nombreCobrador}?`)) {
-                db[currentUserKey].balance -= data.monto;
-                // Guardamos el emoji de salida directa
-                db[currentUserKey].txs.push({
-                    type: 'out',
-                    desc: `Pago QR a ${data.nombreCobrador}`,
-                    date: 'Hoy',
-                    amount: data.monto,
-                    icon: '💰'
-                });
-                saveDB(db);
-                render();
-
-                const reciboData = {
-                    tipo: "RECIBO_CONFIRMADO",
-                    id: data.id,
-                    cobrador: data.cobrador,
-                    pagadorNombre: db[currentUserKey].displayName,
-                    monto: data.monto,
-                    firmaSeguridad: "VALID-GATIS-" + data.id
-                };
-
-                const receiptToken = JSON.stringify(reciboData);
-                document.getElementById('pago-exitoso-block').style.display = "block";
-                document.getElementById('receipt-qrcode-container').innerHTML = "";
-                new QRCode(document.getElementById('receipt-qrcode-container'), { text: receiptToken, width: 160, height: 160 });
-            } else {
-                startPagoCamera();
-            }
-        }
-
-        function startReciboCamera() {
-            reciboScanner = new Html5Qrcode("camera-reader-recibo");
-            reciboScanner.start(
-                { facingMode: "environment" },
-                { fps: 15, qrbox: { width: 230, height: 230 } },
-                (qrText) => { reciboScanner.stop().then(() => { processReciboData(qrText); }); },
-                (err) => {}
-            ).catch(err => alert("Error de cámara: " + err));
-        }
-
-        function processReciboData(qrText) {
-            let recibo = null;
-            let cleanText = qrText.trim();
-
-            try {
-                recibo = JSON.parse(cleanText);
-            } catch(e) {
-                try {
-                    recibo = JSON.parse(atob(cleanText));
-                } catch(err2) {
-                    recibo = null;
-                }
-            }
-
-            if(!recibo || recibo.tipo !== "RECIBO_CONFIRMADO") {
-                alert("Recibo inválido o corrupto.");
-                startReciboCamera();
-                return;
-            }
-            if(recibo.cobrador !== currentUserKey) {
-                alert("Este recibo de cobro no te pertenece a ti.");
-                startReciboCamera();
-                return;
-            }
-            if(usedTokens.includes(recibo.id)) {
-                alert("Este código QR ya fue cobrado anteriormente.");
-                startReciboCamera();
-                return;
-            }
-
-            let db = getDB();
-            db[currentUserKey].balance += recibo.monto;
-            // Guardamos el emoji de entrada directo
-            db[currentUserKey].txs.push({
-                type: 'in',
-                desc: `Cobro de ${recibo.pagadorNombre}`,
-                date: 'Hoy',
-                amount: recibo.monto,
-                icon: '💰'
-            });
-
-            usedTokens.push(recibo.id);
-            localStorage.setItem('gatis_used_tokens_cam', JSON.stringify(usedTokens));
-            saveDB(db);
-            render();
-            closeSheet('modal-cargar-recibo');
-            alert(`¡Fondos inyectados con éxito! +Bs ${recibo.monto.toFixed(2)}`);
-        }
-
-        function executeServicePayment() {
-            const mnt = parseFloat(document.getElementById('servicio-monto').value);
-            if (isNaN(mnt) || mnt <= 0) return alert("Monto incorrecto.");
-            let db = getDB();
-            if(mnt > db[currentUserKey].balance) return alert("Fondos insuficientes.");
-            db[currentUserKey].balance -= mnt;
-            db[currentUserKey].txs.push({ type: 'out', desc: 'Pago de Servicio', date: 'Hoy', amount: mnt, icon: '⚡' });
-            saveDB(db);
-            render();
-            closeSheet('modal-servicios');
-            alert("Servicio Pagado Offline.");
-        }
-
-        function render() {
-            if(!currentUserKey) return;
-            let db = getDB();
-            const acc = db[currentUserKey];
-            document.getElementById('balance-txt').innerText = `Bs ${acc.balance.toLocaleString('es-BO', { minimumFractionDigits: 2 })}`;
-            const box = document.getElementById('history-box');
-            box.innerHTML = '';
-            
-            [...acc.txs].reverse().forEach(t => {
-                const row = document.createElement('div');
-                row.className = 'transaction-row';
-                const isInc = t.type === 'in';
-                
-                // Forzamos que siempre renderice el emoji guardado en t.icon, o un comodín de monedita si no hay ninguno.
-                const emojiAvatar = t.icon || '💰';
-
-                row.innerHTML = `
-                    <div class="tx-main">
-                        <div class="tx-avatar">${emojiAvatar}</div>
-                        <div><div class="tx-title">${t.desc}</div><div class="tx-date">${t.date}</div></div>
-                    </div>
-                    <div class="tx-amount ${isInc ? 'amount-positive' : 'amount-negative'}">${isInc ? '+' : '-'}Bs ${t.amount.toFixed(2)}</div>
-                `;
-                box.appendChild(row);
-            });
-        }
-
-        function openSheet(id) {
-            const el = document.getElementById(id);
-            el.style.display = 'flex';
-            setTimeout(() => el.classList.add('active'), 10);
-            if(id === 'modal-pago-qr') startPagoCamera();
-            if(id === 'modal-cargar-recibo') startReciboCamera();
-        }
-
-        function closeSheet(id) {
-            const el = document.getElementById(id);
-            el.classList.remove('active');
-            if(id === 'modal-pago-qr' && pagoScanner) pagoScanner.stop().catch(()=>{});
-            if(id === 'modal-cargar-recibo' && reciboScanner) reciboScanner.stop().catch(()=>{});
-
-            setTimeout(() => {
-                el.style.display = 'none';
-                el.querySelectorAll('input').forEach(i => i.value = '');
-                if(id === 'modal-cobro-qr') {
-                    document.getElementById('qrcode-container').innerHTML = "";
-                    document.getElementById('btn-quick-scan').style.display = 'none';
-                }
-            }, 300);
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

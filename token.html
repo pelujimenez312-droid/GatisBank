@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GatisToken App de Seguridad</title>
+    <style>
+        body { background-color: #111827; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
+        .token-card { background: #1e293b; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-align: center; max-width: 320px; width: 100%; border: 2px solid #0284c7; }
+        h2 { color: #38bdf8; margin-bottom: 5px; }
+        .code { font-size: 42px; font-weight: bold; letter-spacing: 4px; color: #f59e0b; margin: 20px 0; font-family: monospace; }
+        .bar-container { background: #475569; height: 6px; border-radius: 3px; overflow: hidden; margin-top: 15px; }
+        .bar { background: #10b981; height: 100%; width: 100%; transition: width 1s linear; }
+    </style>
+</head>
+<body>
+
+    <div class="token-card">
+        <h2>🐱 GatisToken</h2>
+        <div style="font-size: 12px; color: #94a3b8;">Código de Validación Dinámico</div>
+        <div class="code" id="token-display">------</div>
+        <div style="font-size: 11px; color: #94a3b8;">Cambia automáticamente cada minuto</div>
+        <div class="bar-container"><div class="bar" id="timer-bar"></div></div>
+    </div>
+
+    <script>
+        function updateToken() {
+            const ahora = new Date();
+            const factorDia = ahora.getDate() * ahora.getMonth() + 1;
+            const factorMinuto = ahora.getHours() * 60 + ahora.getMinutes();
+            
+            let seed = (factorMinuto * 4026) + factorDia;
+            let tokenValue = Math.abs(Math.sin(seed) * 1000000);
+            let tokenFinal = Math.floor(tokenValue % 900000) + 100000; 
+
+            document.getElementById('token-display').innerText = tokenFinal;
+
+            // Barra de progreso visual según los segundos restantes para acabar el minuto
+            const segundosRestantes = 60 - ahora.getSeconds();
+            const porcentaje = (segundosRestantes / 60) * 100;
+            document.getElementById('timer-bar').style.width = porcentaje + "%";
+        }
+
+        // Ejecutar inmediatamente y luego actualizar cada segundo
+        updateToken();
+        setInterval(updateToken, 1000);
+    </script>
+</body>
+</html>
